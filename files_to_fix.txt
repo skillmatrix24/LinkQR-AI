@@ -1,0 +1,4 @@
+src/components/ChatBot.tsx
+src/components/SiteFooter.tsx
+src/components/SiteHeader.tsx
+src/components/TrafficTracker.tsx

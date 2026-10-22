@@ -1,0 +1,8 @@
+{
+  "name": "LinkQR AI",
+  "description": "An AI-powered QR code management and redirection platform.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

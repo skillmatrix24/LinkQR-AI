@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+}
+
+@layer base {
+  :root {
+    --background: 257 33% 95%; /* #F2EFF7 */
+    --foreground: 258 50% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 258 50% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 258 50% 10%;
+    --primary: 258 35% 48%; /* #6750A4 */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 257 20% 90%;
+    --secondary-foreground: 258 35% 48%;
+    --muted: 257 20% 90%;
+    --muted-foreground: 258 15% 40%;
+    --accent: 280 87% 65%; /* #BF5AF2 */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 258 20% 88%;
+    --input: 258 20% 88%;
+    --ring: 258 35% 48%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 258 50% 5%;
+    --foreground: 257 33% 95%;
+    --card: 258 50% 8%;
+    --card-foreground: 257 33% 95%;
+    --popover: 258 50% 8%;
+    --popover-foreground: 257 33% 95%;
+    --primary: 258 35% 60%;
+    --primary-foreground: 258 50% 5%;
+    --secondary: 258 30% 15%;
+    --secondary-foreground: 257 33% 95%;
+    --muted: 258 30% 15%;
+    --muted-foreground: 258 20% 70%;
+    --accent: 280 87% 65%;
+    --accent-foreground: 257 33% 95%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 257 33% 95%;
+    --border: 258 30% 20%;
+    --input: 258 30% 20%;
+    --ring: 258 35% 60%;
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

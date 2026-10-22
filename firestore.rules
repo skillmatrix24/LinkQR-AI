@@ -1,0 +1,171 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Simplified Admin Logic: Restricted to site owner only
+    function isSuperAdmin() {
+      return request.auth != null && (
+        request.auth.token.email in ["skillmatrix24@gmail.com", "admin@test.com", "thegingerleaf77@gmail.com"] || 
+        request.auth.uid in ["nTKXNu6jj6a1DHrLvgsgahZ4nXu1", "4gPQqPsHUShpFRoxyaW5prNNh4h2", "66b1dbtr8iZO5B3AuvCHWSpL79v1"]
+      );
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Global Admin Override
+    match /{document=**} {
+      allow read, write: if isSuperAdmin();
+    }
+
+    // Subscription Plans (Pricing Tiers)
+    match /plans/{planId} {
+      allow read: if true; // Publicly readable so users can see pricing
+    }
+
+    // Custom Domains
+    match /customDomains/{domainId} {
+      allow read: if isSuperAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+      allow create: if isSignedIn();
+      allow update, delete: if isSuperAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+    }
+
+    // --- COLLECTION GROUP RULES (Required for Analytics & CRM Dashboard) ---
+    
+    match /{path=**}/scanevents/{eventId} {
+      allow create: if true;
+      allow read: if isSignedIn() && (resource.data.userId == request.auth.uid || isSuperAdmin());
+    }
+
+    match /{path=**}/clickevents/{eventId} {
+      allow create: if true;
+      allow read: if isSignedIn() && (resource.data.userId == request.auth.uid || isSuperAdmin());
+    }
+
+    match /{path=**}/leads/{leadId} {
+      allow create: if true;
+      allow read, write: if isSignedIn() && (resource.data.userId == request.auth.uid || isSuperAdmin());
+    }
+
+    match /{path=**}/payments/{paymentId} {
+      allow create: if true;
+      allow read, write: if isSignedIn() && (resource.data.userId == request.auth.uid || isSuperAdmin());
+    }
+
+    match /{path=**}/subscriptions/{subId} {
+      allow read: if isSignedIn() && (resource.data.userId == request.auth.uid || isSuperAdmin());
+      allow create: if isSignedIn();
+    }
+    
+    // --- END COLLECTION GROUP RULES ---
+
+    // Public Site Config
+    match /config/site {
+      allow read: if true;
+    }
+
+    // Smart Templates
+    match /smartTemplates/{templateId} {
+      allow read: if true;
+      allow create: if isSignedIn();
+      allow update, delete: if isSuperAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+    }
+
+    // User Profiles and nested data
+    match /users/{userId} {
+      allow read, write: if isOwner(userId) || isSuperAdmin();
+      
+      // Nested collections with path-based owner verification
+      match /subscriptions/{subId} {
+        allow read, write: if isOwner(userId) || isSuperAdmin();
+      }
+
+      match /qrcodes/{qrId} {
+        allow read: if true;
+        allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['totalScans', 'updatedAt']);
+        allow write: if isOwner(userId) || isSuperAdmin();
+        
+        match /scanevents/{eventId} {
+          allow create: if true;
+          allow read: if isOwner(userId) || isSuperAdmin();
+        }
+
+        match /clickevents/{eventId} {
+          allow create: if true;
+          allow read: if isOwner(userId) || isSuperAdmin();
+        }
+      }
+
+      match /microsites/{siteId} {
+        allow read: if true;
+        allow write: if isOwner(userId) || isSuperAdmin();
+
+        match /leads/{leadId} {
+          allow create: if true;
+          allow read, write: if isOwner(userId) || isSuperAdmin();
+        }
+        
+        match /payments/{paymentId} {
+          allow create: if true;
+          allow read, write: if isOwner(userId) || isSuperAdmin();
+        }
+
+        match /clickevents/{eventId} {
+          allow create: if true;
+          allow read: if isOwner(userId) || isSuperAdmin();
+        }
+      }
+      
+      match /digitalIDs/{id} {
+        allow read: if true;
+        allow write: if isOwner(userId) || isSuperAdmin();
+
+        match /leads/{leadId} {
+          allow create: if true;
+          allow read, write: if isOwner(userId) || isSuperAdmin();
+        }
+
+        match /clickevents/{eventId} {
+          allow create: if true;
+          allow read: if isOwner(userId) || isSuperAdmin();
+        }
+      }
+    }
+
+    match /publicShortLinks/{code} {
+      allow read: if true;
+      allow write: if isSignedIn() || isSuperAdmin();
+    }
+
+    match /publicSmartPages/{id} {
+      allow read: if true;
+      allow write: if isSignedIn() || isSuperAdmin();
+    }
+
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow create: if isSignedIn();
+      allow update, delete: if isSuperAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+    }
+
+    match /blogPosts/{postId} {
+      allow read: if true;
+      allow write: if isSuperAdmin();
+    }
+
+    match /siteTraffic/{id} {
+      allow create: if true;
+      allow read: if isSuperAdmin();
+    }
+
+    match /newsletterSubscriptions/{id} {
+      allow create: if true;
+      allow read: if isSuperAdmin();
+    }
+  }
+}
