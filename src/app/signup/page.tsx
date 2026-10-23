@@ -1,8 +1,7 @@
 "use client";
 
-import { Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
-import { useRouter } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowRight,
   Loader2,
@@ -66,7 +65,7 @@ export default function SignupPage() {
   const auth = useAuth();
   const db = useFirestore();
   const { user } = useUser();
-  const router = useNavigate();
+  const navigate = useNavigate();
   const { toast } = useToast();
 
   const siteConfigRef = useMemoFirebase(() => db ? doc(db, "config", "site") : null, [db]);
@@ -76,7 +75,7 @@ export default function SignupPage() {
     if (user) {
       navigate("/dashboard");
     }
-  }, [user, router]);
+  }, [user, navigate]);
 
   // Cleanup reCAPTCHA on unmount
   useEffect(() => {

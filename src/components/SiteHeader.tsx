@@ -72,7 +72,7 @@ export function SiteHeader() {
             link.href.startsWith("/#") ? (
               <a 
                 key={link.name} 
-                to={link.href} 
+                href={link.href} 
                 className={cn(
                   "hover:text-primary transition-colors",
                   pathname === link.href && "text-primary"
@@ -115,7 +115,7 @@ export function SiteHeader() {
             link.href.startsWith("/#") ? (
               <a 
                 key={link.name} 
-                to={link.href} 
+                href={link.href} 
                 className="text-sm font-bold uppercase tracking-widest text-muted-foreground hover:text-primary"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
