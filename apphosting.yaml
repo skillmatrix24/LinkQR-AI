@@ -2,7 +2,7 @@ version: v1
 phases:
   install:
     commands:
-      - npm install
+      - npm install --no-audit --no-fund --prefer-offline
   build:
     commands:
       - npm run build
