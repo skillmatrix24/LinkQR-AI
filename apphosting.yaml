@@ -11,3 +11,5 @@ run:
 env:
   - variable: NPM_CONFIG_PRODUCTION
     value: "false"
+  - variable: CI
+    value: "false"
