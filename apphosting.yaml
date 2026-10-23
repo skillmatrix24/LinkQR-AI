@@ -8,3 +8,6 @@ phases:
       - npm run build
 run:
   command: npm start
+env:
+  - variable: NPM_CONFIG_PRODUCTION
+    value: "false"
