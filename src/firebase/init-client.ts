@@ -2,11 +2,11 @@ import { initializeApp, getApps, type FirebaseApp } from 'firebase/app';
 import { getAuth, type Auth } from 'firebase/auth';
 import { getFirestore, type Firestore } from 'firebase/firestore';
 import { getStorage, type FirebaseStorage } from 'firebase/storage';
-import { firebaseConfig } from './config';
+import { firebaseConfig, firestoreDatabaseId } from './config';
 
 /**
  * Core Firebase initialization logic for the client side.
- * Updated to include Firebase Storage.
+ * Initializes Firebase App, Auth, Firestore with the designated database ID, and Storage.
  */
 export function initializeFirebase(): {
   firebaseApp: FirebaseApp | null;
@@ -25,7 +25,9 @@ export function initializeFirebase(): {
       : initializeApp(firebaseConfig);
 
     const auth = getAuth(firebaseApp);
-    const firestore = getFirestore(firebaseApp);
+    const firestore = firestoreDatabaseId && firestoreDatabaseId !== '(default)'
+      ? getFirestore(firebaseApp, firestoreDatabaseId)
+      : getFirestore(firebaseApp);
     const storage = getStorage(firebaseApp);
 
     return { firebaseApp, auth, firestore, storage };

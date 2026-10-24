@@ -59,7 +59,7 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="max-w-7xl mx-auto mt-12 sm:mt-20 pt-8 sm:pt-12 border-t border-border/50 flex flex-col md:flex-row justify-between gap-6 sm:gap-8 items-center text-center">
-        <p className="font-medium text-xs sm:text-sm text-muted-foreground">© 2026 Powered By ❤️ <a to="https://skillmatrix.in" target="_blank" className="text-primary font-black hover:underline">Skill Matrix</a></p>
+        <p className="font-medium text-xs sm:text-sm text-muted-foreground">© 2026 Powered By ❤️ <a href="https://skillmatrix.in" target="_blank" className="text-primary font-black hover:underline">Skill Matrix</a></p>
         <div className="flex flex-wrap justify-center gap-4 sm:gap-8 text-[8px] sm:text-[10px] font-black text-muted-foreground uppercase tracking-widest">
           <Link to="/contact" className="hover:text-primary">Support</Link>
           <Link to="/faq" className="hover:text-primary">FAQ</Link>

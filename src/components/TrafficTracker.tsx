@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { usePathname } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { logVisitAction } from '@/app/actions/traffic';
 
 /**

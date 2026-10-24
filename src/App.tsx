@@ -13,6 +13,7 @@ import AboutPage from './app/about/page';
 import ContactPage from './app/contact/page';
 import PrivacyPage from './app/privacy/page';
 import TermsPage from './app/terms/page';
+import DashboardLayout from './app/dashboard/layout';
 import { FirebaseProvider } from './firebase';
 import { initializeFirebase } from './firebase';
 import { useMemo } from 'react';
@@ -33,6 +34,7 @@ export default function App() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/terms" element={<TermsPage />} />
+          <Route path="/dashboard/*" element={<DashboardLayout children={<></>} />} />
         </Routes>
       </FirebaseProvider>
     </BrowserRouter>

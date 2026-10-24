@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
-import { Link } from "react-router-dom";
-import { useRouter, usePathname } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { 
   SidebarProvider, 
   Sidebar, 
@@ -88,11 +87,11 @@ interface NavGroup {
 }
 
 function DashboardSidebar({ profile, user, isAdmin, isProfileLoading }: any) {
+  const navigate = useNavigate();
+  const db = useFirestore();
+  const auth = useAuth();
   const { setOpenMobile, isMobile } = useSidebar();
   const pathname = useLocation().pathname;
-  const auth = useAuth();
-  const router = useNavigate();
-  const db = useFirestore();
 
   const siteConfigRef = useMemoFirebase(() => db ? doc(db, "config", "site") : null, [db]);
   const { data: siteConfig } = useDoc(siteConfigRef);
@@ -344,7 +343,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const { user, isUserLoading } = useUser();
   const auth = useAuth();
   const db = useFirestore();
-  const router = useNavigate();
+  const navigate = useNavigate();
   const pathname = useLocation().pathname;
   const [showExpiryBanner, setShowExpiryBanner] = useState(true);
 
@@ -377,7 +376,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     if (!isUserLoading && !user) {
       navigate("/login");
     }
-  }, [user, isUserLoading, router]);
+  }, [user, isUserLoading, navigate]);
 
   if (isUserLoading) {
     return (
